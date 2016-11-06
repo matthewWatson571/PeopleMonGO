@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">PeoplemonGO!</string>
+    <string name="register">Register</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="password">Password</string>
+    <string name="e_mail_address">E-Mail Address</string>
+    <string name="username">Username</string>
+    <string name="login">Login</string>
+    <string name="login_failed">Login Failed</string>
+    <string name="empty_username_or_password">Please fillout all fields.</string>
+    <string name="valid_email">Please enter a vaild email</string>
+    <string name="passwords_dont_match">Your passwords do not match!</string>
+    <string name="registration_failed">Registration Failed</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="logout">Logout</string>
+</resources>
