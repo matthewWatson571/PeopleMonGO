@@ -2,6 +2,8 @@ package com.example.matthewwatson.peoplemongo.Model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Date;
+
 /**
  * Created by Matthew.Watson on 11/7/16.
  */
@@ -16,6 +18,12 @@ public class Authorization {
 
     @SerializedName("password")
     private String password;
+
+    @SerializedName("access_token")
+    private String token;
+
+    @SerializedName(".expires")
+    private Date expiration;
 
 
     public Authorization(){}
@@ -51,5 +59,19 @@ public class Authorization {
         this.password = password;
     }
 
+    public String getToken() {
+        return token;
+    }
 
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public Date getExpiration() {
+        return expiration;
+    }
+
+    public void setExpiration(Date expiration) {
+        this.expiration = expiration;
+    }
 }

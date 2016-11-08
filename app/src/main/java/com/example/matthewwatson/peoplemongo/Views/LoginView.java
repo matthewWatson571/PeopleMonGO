@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.example.matthewwatson.peoplemongo.Model.Authorization;
 import com.example.matthewwatson.peoplemongo.Network.RestClient;
+import com.example.matthewwatson.peoplemongo.Network.UserStore;
 import com.example.matthewwatson.peoplemongo.PeoplemonApplication;
 import com.example.matthewwatson.peoplemongo.R;
 import com.example.matthewwatson.peoplemongo.Stages.MapStage;
@@ -95,9 +96,9 @@ public class LoginView extends LinearLayout {
                 @Override
                 public void onResponse(Call<Authorization> call, Response<Authorization> response) {
                     if (response.isSuccessful()) { //checks for 200-299
-//                        Authorization authUser = response.body();//gets user
-//                        UserStore.getInstance().setToken(authUser());//gets token
-//                        UserStore.getInstance().setTokenExpiration(authUser.getExpiration());//gets token exp
+                        Authorization authUser = response.body();//gets user
+                        UserStore.getInstance().setToken(authUser.getToken());//gets token
+                        UserStore.getInstance().setTokenExpiration(authUser.getExpiration());//gets token exp
 
                         Flow flow = PeoplemonApplication.getMainFlow();
                         History newHistory = History.single(new MapStage());

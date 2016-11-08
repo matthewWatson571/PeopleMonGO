@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.example.matthewwatson.peoplemongo.Views.MapView
+<com.example.matthewwatson.peoplemongo.Views.MapPageView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/myMapView"
@@ -11,4 +11,4 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"/>
-</com.example.matthewwatson.peoplemongo.Views.MapView>
+</com.example.matthewwatson.peoplemongo.Views.MapPageView>
