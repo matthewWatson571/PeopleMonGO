@@ -5,13 +5,13 @@
         android:icon="@android:drawable/ic_menu_my_calendar"
         android:orderInCategory="10"
         android:title="@string/edit_profile"
-        app:showAsAction="ifRoom">
+        app:showAsAction="always">
     </item>
     <item
         android:id="@+id/logout"
         android:icon="@android:drawable/ic_menu_my_calendar"
         android:orderInCategory="10"
         android:title="@string/logout"
-        app:showAsAction="ifRoom">
+        app:showAsAction="always">
     </item>
 </menu>

@@ -10,12 +10,11 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.example.matthewwatson.peoplemongo.Model.User;
+import com.example.matthewwatson.peoplemongo.Model.Account;
 import com.example.matthewwatson.peoplemongo.Network.RestClient;
-import com.example.matthewwatson.peoplemongo.Network.UserStore;
 import com.example.matthewwatson.peoplemongo.PeoplemonApplication;
 import com.example.matthewwatson.peoplemongo.R;
-import com.example.matthewwatson.peoplemongo.Stages.MapStage;
+import com.example.matthewwatson.peoplemongo.Stages.LoginStage;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -63,53 +62,51 @@ public class RegisterView extends LinearLayout {
     }
 
     @OnClick(R.id.register_button)
-    public void register(){
-        InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(userNameField.getWindowToken(),0);//used to hide keyboard after input
-        imm.hideSoftInputFromWindow(passwordField1.getWindowToken(),0);
-        imm.hideSoftInputFromWindow(passwordConfirm.getWindowToken(),0);
-        imm.hideSoftInputFromWindow(emailField.getWindowToken(),0);
+    public void register() {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(userNameField.getWindowToken(), 0);//used to hide keyboard after input
+        imm.hideSoftInputFromWindow(passwordField1.getWindowToken(), 0);
+        imm.hideSoftInputFromWindow(passwordConfirm.getWindowToken(), 0);
+        imm.hideSoftInputFromWindow(emailField.getWindowToken(), 0);
 
         String username = userNameField.getText().toString();
         String password1 = passwordField1.getText().toString();
         String password2 = passwordConfirm.getText().toString();
         String email = emailField.getText().toString();
+        String apiKey = "iOSandroid301november2016";
+        String avatarBase64 = "pokemon.png";
 
-        if (username.isEmpty() || password1.isEmpty() || password2.isEmpty() || email.isEmpty()){
+
+        if (username.isEmpty() || password1.isEmpty() || password2.isEmpty() || email.isEmpty()) {
             Toast.makeText(context, R.string.empty_username_or_password, Toast.LENGTH_LONG).show();
 
-        }else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             Toast.makeText(context, R.string.valid_email, Toast.LENGTH_LONG).show();
 
-        }else if (!password1.equals(password2)){
-            Toast.makeText(context, context.getResources().getString (R.string.passwords_dont_match), Toast.LENGTH_LONG).show();
-        }
-        else {
+        } else if (!password1.equals(password2)) {
+            Toast.makeText(context, context.getResources().getString(R.string.passwords_dont_match), Toast.LENGTH_LONG).show();
+        } else {
             registerButton.setEnabled(false);
             spinner.setVisibility(VISIBLE);
 
-            User user = new User(username,password1,email);
+            Account account = new Account(email, username, avatarBase64, apiKey, password1);
             RestClient restClient = new RestClient();
-            restClient.getApiService().register(user).enqueue(new Callback<User>() {
+            restClient.getApiService().register(account).enqueue(new Callback<Void>() {
                 @Override
-                public void onResponse(Call<User> call, Response<User> response) {
-                    if (response.isSuccessful()){ //checks for 200-299
-                        User regUser = response.body();
-                        UserStore.getInstance().setToken(regUser.getToken());
-                        UserStore.getInstance().setTokenExpiration(regUser.getExpiration());
-
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    if (response.isSuccessful()) { //checks for 200-299
                         Flow flow = PeoplemonApplication.getMainFlow();
-                        History newHistory = History.single(new MapStage());
-                        flow.setHistory(newHistory, Flow.Direction.REPLACE);
+                        History newHistory = History.single(new LoginStage());
+                        flow.setHistory(newHistory, Flow.Direction.BACKWARD);
 
-                    }else {
+                    } else {
                         resetView();
                         Toast.makeText(context, R.string.registration_failed + ": " + response.code(), Toast.LENGTH_LONG).show();
                     }
                 }
 
                 @Override
-                public void onFailure(Call<User> call, Throwable t) {
+                public void onFailure(Call<Void> call, Throwable t) {
                     resetView();
                     Toast.makeText(context, R.string.registration_failed, Toast.LENGTH_LONG).show();
 
@@ -118,7 +115,7 @@ public class RegisterView extends LinearLayout {
         }
     }
 
-    private void resetView(){
+    private void resetView() {
         registerButton.setEnabled(true);
         spinner.setVisibility(GONE);
     }

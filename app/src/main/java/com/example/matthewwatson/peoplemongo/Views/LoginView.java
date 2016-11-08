@@ -9,9 +9,8 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.example.matthewwatson.peoplemongo.Model.User;
+import com.example.matthewwatson.peoplemongo.Model.Authorization;
 import com.example.matthewwatson.peoplemongo.Network.RestClient;
-import com.example.matthewwatson.peoplemongo.Network.UserStore;
 import com.example.matthewwatson.peoplemongo.PeoplemonApplication;
 import com.example.matthewwatson.peoplemongo.R;
 import com.example.matthewwatson.peoplemongo.Stages.MapStage;
@@ -60,58 +59,58 @@ public class LoginView extends LinearLayout {
     protected void onFinishInflate() { //inflates our container
         super.onFinishInflate();
         ButterKnife.bind(this);
-
     }
+
     @OnClick(R.id.login_register_button)
-    public void showRegisterView(){
+    public void showRegisterView() {
         Flow flow = getMainFlow();
         History newHistory = flow.getHistory().buildUpon()
                 .push(new RegisterStage())
                 .build();
-        flow.setHistory(newHistory,Flow.Direction.FORWARD);
+        flow.setHistory(newHistory, Flow.Direction.FORWARD);
 
     }
 
     @OnClick(R.id.login_button)
-    public void login(){
-        InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(userNameField.getWindowToken(),0);//used to hide keyboard after input
-        imm.hideSoftInputFromWindow(passwordField.getWindowToken(),0);//terrible.
+    public void login() {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(userNameField.getWindowToken(), 0);//used to hide keyboard after input
+        imm.hideSoftInputFromWindow(passwordField.getWindowToken(), 0);//terrible.
 
         String username = userNameField.getText().toString();
         String password = passwordField.getText().toString();
+        String grantType = "password";
 
-        if (username.isEmpty() || password.isEmpty()){
+
+        if (username.isEmpty() || password.isEmpty()) {
             Toast.makeText(context, R.string.empty_username_or_password, Toast.LENGTH_LONG).show();
-        }
-        else {
+        } else {
             loginButton.setEnabled(false);
             loginRegisterButton.setEnabled(false);
             spinner.setVisibility(VISIBLE);
 
-            User user = new User(username,password);
             RestClient restClient = new RestClient();
-            restClient.getApiService().login(user).enqueue(new Callback<User>() {
+            restClient.getApiService().login(grantType,username,password).enqueue(new Callback<Authorization>() {
+
                 @Override
-                public void onResponse(Call<User> call, Response<User> response) {
-                    if (response.isSuccessful()){ //checks for 200-299
-                        User authUser = response.body();//gets user
-                        UserStore.getInstance().setToken(authUser.getToken());//gets token
-                        UserStore.getInstance().setTokenExpiration(authUser.getExpiration());//gets token exp
+                public void onResponse(Call<Authorization> call, Response<Authorization> response) {
+                    if (response.isSuccessful()) { //checks for 200-299
+//                        Authorization authUser = response.body();//gets user
+//                        UserStore.getInstance().setToken(authUser());//gets token
+//                        UserStore.getInstance().setTokenExpiration(authUser.getExpiration());//gets token exp
 
                         Flow flow = PeoplemonApplication.getMainFlow();
                         History newHistory = History.single(new MapStage());
                         flow.setHistory(newHistory, Flow.Direction.REPLACE);
 
-
-                    }else {
+                    } else {
                         resetView();
-                        Toast.makeText(context,context.getResources().getString (R.string.login_failed) + ": " + response.code(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, context.getResources().getString(R.string.login_failed) + ": " + response.code(), Toast.LENGTH_LONG).show();
                     }
                 }
 
                 @Override
-                public void onFailure(Call<User> call, Throwable t) {
+                public void onFailure(Call<Authorization> call, Throwable t) {
                     resetView();
                     Toast.makeText(context, R.string.login_failed, Toast.LENGTH_LONG).show();
 
@@ -120,7 +119,7 @@ public class LoginView extends LinearLayout {
         }
     }
 
-    private void resetView(){
+    private void resetView() {
         loginButton.setEnabled(true);
         loginRegisterButton.setEnabled(true);
         spinner.setVisibility(GONE);

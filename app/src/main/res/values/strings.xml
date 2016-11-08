@@ -4,7 +4,7 @@
     <string name="confirm_password">Confirm Password</string>
     <string name="password">Password</string>
     <string name="e_mail_address">E-Mail Address</string>
-    <string name="username">Username</string>
+    <string name="fullName">Username</string>
     <string name="login">Login</string>
     <string name="login_failed">Login Failed</string>
     <string name="empty_username_or_password">Please fillout all fields.</string>
@@ -13,4 +13,8 @@
     <string name="registration_failed">Registration Failed</string>
     <string name="edit_profile">Edit Profile</string>
     <string name="logout">Logout</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="google_maps_key">AIzaSyDe_LTCyjaC44OsTvrFE2xciHnvO6U9fY4</string>
+    <string name="save">Save</string>
+    <string name="error_retrieving_image">Error Retrieving Image</string>
 </resources>

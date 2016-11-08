@@ -10,14 +10,23 @@ import java.util.Date;
 
 public class User {
 
-    @SerializedName("username")
-    private String username;
+    @SerializedName("Email")
+    private String email;
 
-    @SerializedName("password")
+    @SerializedName("FullName")
+    private String fullName;
+
+    @SerializedName("AvatarBase64")
+    private String avatarBase64;
+
+    @SerializedName("ApiKey")
+    private String apiKey;
+
+    @SerializedName("Password")
     private String password;
 
-    @SerializedName("email")
-    private String email;
+
+
 
     @SerializedName("token")
     private String token;
@@ -28,23 +37,41 @@ public class User {
     public User() {
     }
 
-    public User(String username, String password) { //function overloading
-        this.username = username;
+    public User(String fullName, String password) {
+        this.fullName = fullName;
         this.password = password;
     }
 
-    public User(String username, String password, String email) {
-        this.username = username;
-        this.password = password;
+    public User(String email, String fullName, String avatarBase64, String apiKey, String password) {
         this.email = email;
+        this.fullName = fullName;
+        this.avatarBase64 = avatarBase64;
+        this.apiKey = apiKey;
+        this.password = password;
     }
 
-    public String getUsername() {
-        return username;
+    public String getApiKey() {
+        return apiKey;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setApiKey(String apiKey) {
+        this.apiKey = apiKey;
+    }
+
+    public String getAvatarBase64() {
+        return avatarBase64;
+    }
+
+    public void setAvatarBase64(String avatarBase64) {
+        this.avatarBase64 = avatarBase64;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public String getPassword() {

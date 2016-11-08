@@ -25,15 +25,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main); //map view??
 
-        ButterKnife.bind(this); //NOTHING WORKS WITHOUT THIS LINE
+        ButterKnife.bind(this);
 
         flow = PeoplemonApplication.getMainFlow();
         dispatcher = new ScreenplayDispatcher(this, container); //controls UI, container is the views
         dispatcher.setUp(flow);//sets up based on what's in flow
 
-//        testCalls();
 //        UserStore.getInstance().setToken(null);
 
         if (UserStore.getInstance().getToken() == null || UserStore.getInstance().getTokenExpiration() == null) {
