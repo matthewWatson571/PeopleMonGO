@@ -2,6 +2,8 @@ package com.example.matthewwatson.peoplemongo.Model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Date;
+
 /**
  * Created by Matthew.Watson on 11/4/16.
  */
@@ -23,6 +25,27 @@ public class User {
     @SerializedName("Password")
     private String password;
 
+    @SerializedName("Longitude")
+    private Double longitude;
+
+    @SerializedName("Latitude")
+    private Double latitude;
+
+    @SerializedName("CaughtUserId")
+    private String caughtUserId;
+
+    @SerializedName("RadiusInMeters")
+    private Integer radiusInMeters;
+
+    @SerializedName("UserId")
+    private String userId;
+
+    @SerializedName("UserName")
+    private String userName;
+
+    @SerializedName("Created")
+    private Date created;
+
 
     public User() {
     }
@@ -38,6 +61,88 @@ public class User {
         this.avatarBase64 = avatarBase64;
         this.apiKey = apiKey;
         this.password = password;
+    }
+
+//    public User(Double longitude, Double latitude) {
+//        this.longitude = longitude;
+//        this.latitude = latitude;
+//    }
+
+    public User(String caughtUserId, Integer radiusInMeters) {
+        this.caughtUserId = caughtUserId;
+        this.radiusInMeters = radiusInMeters;
+    }
+
+    public User(String userId, String userName, Date created, String avatarBase64) {
+        this.userId = userId;
+        this.userName = userName;
+        this.created = created;
+        this.avatarBase64 = avatarBase64;
+    }
+
+    public User(String userId, String userName, Double longitude, Double latitude, String avatarBase64, Date created) {
+        this.userId = userId;
+        this.userName = userName;
+        this.longitude = longitude;
+        this.latitude = latitude;
+        this.avatarBase64 = avatarBase64;
+        this.created = created;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public Date getCreated() {
+        return created;
+    }
+
+    public void setCreated(Date created) {
+        this.created = created;
+    }
+
+    public String getCaughtUserId() {
+        return caughtUserId;
+    }
+
+    public void setCaughtUserId(String caughtUserId) {
+        this.caughtUserId = caughtUserId;
+    }
+
+    public Integer getRadiusInMeters() {
+        return radiusInMeters;
+    }
+
+    public void setRadiusInMeters(Integer radiusInMeters) {
+        this.radiusInMeters = radiusInMeters;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
     }
 
     public String getApiKey() {
@@ -79,6 +184,8 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
+
+
 
 
 }

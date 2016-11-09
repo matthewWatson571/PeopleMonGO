@@ -17,4 +17,7 @@
     <string name="google_maps_key">AIzaSyDe_LTCyjaC44OsTvrFE2xciHnvO6U9fY4</string>
     <string name="save">Save</string>
     <string name="error_retrieving_image">Error Retrieving Image</string>
+    <string name="check_in_failed">Check In Failed</string>
+    <string name="checked_in">You Checked In!</string>
+    <string name="run_away">They Ran Away!</string>
 </resources>

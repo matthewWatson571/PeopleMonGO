@@ -26,13 +26,7 @@ public class Authorization {
     private Date expiration;
 
 
-    public Authorization(){}
 
-    public Authorization(String grantType, String username, String password) {
-        this.grantType = grantType;
-        this.username = username;
-        this.password = password;
-    }
 
 
     public String getGrantType() {

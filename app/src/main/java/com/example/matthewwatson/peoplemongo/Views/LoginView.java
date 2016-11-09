@@ -33,7 +33,7 @@ import static com.example.matthewwatson.peoplemongo.PeoplemonApplication.getMain
  */
 
 public class LoginView extends LinearLayout {
-    Context context;
+    private Context context;
 
     @Bind(R.id.login_user_name_ET)
     EditText userNameField;

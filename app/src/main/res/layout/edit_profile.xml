@@ -19,8 +19,9 @@
     <ImageButton
         android:id="@+id/edit_profile_imageView"
         android:layout_width="match_parent"
-        android:layout_height="237dp"
-        android:padding="8dp" android:layout_alignParentTop="true"
+        android:layout_height="250dp"
+        android:padding="8dp"
+        android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"/>
     <Button
         android:id="@+id/save_button"
@@ -28,5 +29,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:text="@string/save"/>
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" app:srcCompat="@drawable/peoplemon_go"
+        android:id="@+id/imageView2"/>
 
 </LinearLayout>
