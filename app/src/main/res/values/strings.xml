@@ -20,4 +20,13 @@
     <string name="check_in_failed">Check In Failed</string>
     <string name="checked_in">You Checked In!</string>
     <string name="run_away">They Ran Away!</string>
+    <string name="change_picture">Change Picture</string>
+    <string name="me">ME!</string>
+    <string name="location_failed">Location services failed</string>
+    <string name="check_in">You Checked In</string>
+    <string name="nearby_users">A Wild Interapter Appears!</string>
+    <string name="no_users">There\'s nobody here!</string>
+    <string name="find_user_failed">Failed to Find Users</string>
+    <string name="connection_failed">Connection Failed</string>
+    <string name="list_failed">Error retrieving Peoplemon list</string>
 </resources>

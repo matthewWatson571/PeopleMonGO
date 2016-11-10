@@ -16,7 +16,7 @@
         android:padding="8dp"
         android:text="username"/>
 
-    <ImageButton
+    <ImageView
         android:id="@+id/edit_profile_imageView"
         android:layout_width="match_parent"
         android:layout_height="250dp"
@@ -29,6 +29,12 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:text="@string/save"/>
+    <Button
+        android:id="@+id/edit_picture_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/change_picture"/>
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content" app:srcCompat="@drawable/peoplemon_go"

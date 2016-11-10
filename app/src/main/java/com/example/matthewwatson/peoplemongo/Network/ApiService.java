@@ -28,13 +28,16 @@ public interface ApiService {
     @POST("/v1/User/CheckIn")
     Call<Void> checkIn(@Body LatLng latLng);
 
-    @POST("/v1/User/Catch")
-    Call<User> catchUser (@Body User user);
+    @GET("/v1/User/Caught")
+    Call<User[]> caught();
 
     @GET("/v1/User/Nearby")
-    Call<User[]> nearBy (@Query("radiusInMeters") Integer radiusInMeters);
+    Call<User[]> nearBy(@Query("radiusInMeters") Integer radiusInMeters);
 
-
+    @FormUrlEncoded
+    @POST("v1/User/Catch")
+    Call <Void> catchemAll(@Field("CaughtUserId") String userId,
+                           @Field("RadiusInMeters") Integer radius);
 
     @FormUrlEncoded
     @POST("token")

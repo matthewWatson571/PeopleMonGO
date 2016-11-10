@@ -31,12 +31,6 @@ public class User {
     @SerializedName("Latitude")
     private Double latitude;
 
-    @SerializedName("CaughtUserId")
-    private String caughtUserId;
-
-    @SerializedName("RadiusInMeters")
-    private Integer radiusInMeters;
-
     @SerializedName("UserId")
     private String userId;
 
@@ -46,13 +40,14 @@ public class User {
     @SerializedName("Created")
     private Date created;
 
+    @SerializedName("CaughtUserId")
+    private String caughtUserId;
+
+    @SerializedName("RadiusInMeters")
+    private Integer radiusInMeters;
+
 
     public User() {
-    }
-
-    public User(String fullName, String password) {
-        this.fullName = fullName;
-        this.password = password;
     }
 
     public User(String email, String fullName, String avatarBase64, String apiKey, String password) {
@@ -62,11 +57,6 @@ public class User {
         this.apiKey = apiKey;
         this.password = password;
     }
-
-//    public User(Double longitude, Double latitude) {
-//        this.longitude = longitude;
-//        this.latitude = latitude;
-//    }
 
     public User(String caughtUserId, Integer radiusInMeters) {
         this.caughtUserId = caughtUserId;
@@ -92,6 +82,8 @@ public class User {
     public String getUserId() {
         return userId;
     }
+
+
 
     public void setUserId(String userId) {
         this.userId = userId;

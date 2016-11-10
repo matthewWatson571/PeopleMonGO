@@ -5,10 +5,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.AttributeSet;
 import android.util.Base64;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.example.matthewwatson.peoplemongo.MainActivity;
 import com.example.matthewwatson.peoplemongo.Model.ImageLoadedEvent;
@@ -39,10 +40,13 @@ public class EditProfileView extends LinearLayout {
     EditText editUserName;
 
     @Bind(R.id.edit_profile_imageView)
-    ImageButton editProfileImageView;
+    ImageView editProfileImageView;
+
+    @Bind(R.id.edit_picture_button)
+    Button editPictureButton;
 
     @Bind(R.id.save_button)
-    ImageView saveButton;
+    Button saveButton;
 
     public EditProfileView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -62,9 +66,10 @@ public class EditProfileView extends LinearLayout {
         super.onDetachedFromWindow();
     }
 
-    @OnClick(R.id.edit_profile_imageView)
+    @OnClick(R.id.edit_picture_button)
     public void pictureTapped() {
         ((MainActivity) context).getImage();
+        Toast.makeText(context, "CLICK", Toast.LENGTH_SHORT).show();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -87,12 +92,15 @@ public class EditProfileView extends LinearLayout {
             width = (int) (height * ratio);
         }
         scaledImage = Bitmap.createScaledBitmap(image, width, height, true);
+
         EventBus.getDefault().post(new ImageSized());
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         scaledImage.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
         byte[] b = outputStream.toByteArray();
 
+
+         editProfileImageView.setImageBitmap(scaledImage);
         //Take the bitmap Array and encode it to Base64
         String encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
 
