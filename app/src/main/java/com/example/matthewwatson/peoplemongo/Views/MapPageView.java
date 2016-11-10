@@ -3,6 +3,7 @@ package com.example.matthewwatson.peoplemongo.Views;
 import android.content.Context;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
@@ -47,8 +48,10 @@ public class MapPageView extends RelativeLayout implements OnMapReadyCallback,
 
     private GoogleMap mMap;
     private GoogleApiClient mGoogleApiClient;
-    protected Location mLastLocation;
+    private Location mLastLocation;
     private LocationRequest mLocationRequest;
+    Handler handler = new Handler();
+
     private LatLng latLng;
     private Context context;
     private ArrayList<User> peopleMon;
@@ -80,45 +83,13 @@ public class MapPageView extends RelativeLayout implements OnMapReadyCallback,
                     .build();
         }
         mGoogleApiClient.connect();
-        createLocationRequest();
+//        createLocationRequest();
 
     }
 
-
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        try {
-            mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-        } catch (SecurityException s) {
-            Toast.makeText(context, R.string.connection_failed, Toast.LENGTH_LONG).show();
-        }
-
-        latLng = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()); //NULL POINTER EXCEPTION
-
-        mMap.addMarker(new MarkerOptions().position(latLng).title(getContext().getString(R.string.me))
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.pokemon)));
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16.0f));
-
-        final RestClient restClient = new RestClient();
-        restClient.getApiService().checkIn(latLng).enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                if (response.isSuccessful()) { //checks for 200-299
-                    Toast.makeText(context, R.string.check_in, Toast.LENGTH_SHORT).show();
-                    checkForNearby();
-
-                } else {
-                    Toast.makeText(context, R.string.check_in_failed, Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-
-                Toast.makeText(context, R.string.check_in_failed, Toast.LENGTH_SHORT).show();
-            }
-        });
-        mMap.clear();
+        handler.post(locationCheck);
     }
 
 
@@ -177,7 +148,7 @@ public class MapPageView extends RelativeLayout implements OnMapReadyCallback,
             @Override
             public void onResponse(Call<User[]> call, Response<User[]> response) {
                 if (response.isSuccessful()) {
-                    Toast.makeText(context, R.string.nearby_users, Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(context, R.string.nearby_users, Toast.LENGTH_SHORT).show();
 
                     peopleMon = new ArrayList<>(Arrays.asList(response.body()));
 
@@ -223,9 +194,9 @@ public class MapPageView extends RelativeLayout implements OnMapReadyCallback,
         restclient.getApiService().caught().enqueue(new Callback<User[]>() {
             @Override
             public void onResponse(Call<User[]> call, Response<User[]> response) {
-                for (final User user : caughtPeoplemon) {
-                    caughtPeoplemon.add(user);
-                }
+//                for (final User user : caughtPeoplemon) {
+//                    caughtPeoplemon.add(user);
+//                }
             }
 
             @Override
@@ -234,6 +205,51 @@ public class MapPageView extends RelativeLayout implements OnMapReadyCallback,
             }
         });
     }
+
+    public void updateLocation(){
+        latLng = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
+        mMap.addMarker(new MarkerOptions().position(latLng).title(getContext().getString(R.string.me))
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.pokemon)));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16.0f));
+
+        final RestClient restClient = new RestClient();
+        restClient.getApiService().checkIn(latLng).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) { //checks for 200-299
+//                    Toast.makeText(context, R.string.check_in, Toast.LENGTH_SHORT).show();
+                    checkForNearby();
+
+                } else {
+                    Toast.makeText(context, R.string.check_in_failed, Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Toast.makeText(context, R.string.check_in_failed, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    Runnable locationCheck = new Runnable() {
+        @Override
+        public void run() {
+            try {
+                try {
+                    mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+
+                    if(mLastLocation != null){
+                        updateLocation();
+                    }
+                } catch (SecurityException e) {
+                    e.printStackTrace();
+                }
+            } finally {
+                handler.postDelayed(this, 2000);
+            }
+        }
+    };
 
 }
 
