@@ -89,7 +89,6 @@ public class User {
     }
 
 
-
     public void setUserId(String userId) {
         this.userId = userId;
     }
@@ -181,8 +180,6 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
-
-
 
 
 }

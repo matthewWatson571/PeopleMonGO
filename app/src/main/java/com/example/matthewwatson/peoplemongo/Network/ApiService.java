@@ -39,8 +39,8 @@ public interface ApiService {
 
     @FormUrlEncoded
     @POST("v1/User/Catch")
-    Call <Void> catchemAll(@Field("CaughtUserId") String userId,
-                           @Field("RadiusInMeters") Integer radius);
+    Call<Void> catchemAll(@Field("CaughtUserId") String userId,
+                          @Field("RadiusInMeters") Integer radius);
 
     @FormUrlEncoded
     @POST("token")

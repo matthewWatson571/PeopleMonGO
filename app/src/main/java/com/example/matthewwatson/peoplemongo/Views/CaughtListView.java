@@ -32,7 +32,7 @@ public class CaughtListView extends RelativeLayout {
     @Bind(R.id.caught_recycler)
     RecyclerView recyclerView;
 
-    public CaughtListView(Context context,AttributeSet attrs) {
+    public CaughtListView(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
     }
@@ -48,24 +48,27 @@ public class CaughtListView extends RelativeLayout {
         recyclerView.setAdapter(peopleCaughtAdapter);
         listCaughtPeople();
     }
-    private void listCaughtPeople(){
+
+    private void listCaughtPeople() {
         RestClient restClient = new RestClient();
         restClient.getApiService().caught().enqueue(new Callback<User[]>() {
             @Override
             public void onResponse(Call<User[]> call, Response<User[]> response) {
                 // Is the server response between 200 to 299
-                if (response.isSuccessful()){
+                if (response.isSuccessful()) {
                     peopleCaughtAdapter.caughtUsers = new ArrayList<>(Arrays.asList(response.body()));
-                    for (User user  : peopleCaughtAdapter.caughtUsers) {
+                    for (User user : peopleCaughtAdapter.caughtUsers) {
+
                         peopleCaughtAdapter.notifyDataSetChanged();
                     }
-                }else{
-                    Toast.makeText(context,"Get User Info Failed" + ": " + response.code(), Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(context, R.string.profile_info_error + ": " + response.code(), Toast.LENGTH_LONG).show();
                 }
             }
+
             @Override
             public void onFailure(Call<User[]> call, Throwable t) {
-                Toast.makeText(context,"Get User Info Failed", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, R.string.profile_info_error, Toast.LENGTH_LONG).show();
             }
         });
     }

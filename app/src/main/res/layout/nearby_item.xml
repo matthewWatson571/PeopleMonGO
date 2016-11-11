@@ -12,12 +12,10 @@
         android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_centerVertical="true"
-        android:scaleType="fitStart"
-        android:src="@drawable/pokeball"
-       />
+        android:layout_centerVertical="true" android:scaleType="fitStart"
+        app:srcCompat="@drawable/pokeball"/>
     <TextView
-        android:id="@+id/user_name_field"
+        android:id="@+id/nearby_user_name_field"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="UserName"

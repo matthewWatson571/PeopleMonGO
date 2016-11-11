@@ -7,15 +7,15 @@ import com.example.matthewwatson.peoplemongo.R;
 import com.example.matthewwatson.peoplemongo.Riggers.SlideRigger;
 
 /**
- * Created by Matthew.Watson on 11/4/16.
+ * Created by Matthew.Watson on 11/11/16.
  */
 
-public class MapStage extends IndexedStage {
+public class NearbyStage extends IndexedStage {
     private final SlideRigger rigger; //sets Rigger
 
     @Override
     public int getLayoutId() {
-        return R.layout.map_view;
+        return R.layout.nearby_view;
     }
 
     @Override
@@ -23,12 +23,12 @@ public class MapStage extends IndexedStage {
         return rigger;
     }
 
-    public MapStage(Application context) {
-        super(MapStage.class.getName());
+    public NearbyStage(Application context) {
+        super(NearbyStage.class.getName());
         this.rigger = new SlideRigger(context);
     }
 
-    public MapStage() {
+    public NearbyStage() {
         this(PeoplemonApplication.getInstance());
     }
 }

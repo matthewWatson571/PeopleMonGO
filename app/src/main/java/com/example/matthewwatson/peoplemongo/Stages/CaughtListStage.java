@@ -14,10 +14,11 @@ import com.example.matthewwatson.peoplemongo.Riggers.SlideRigger;
 public class CaughtListStage extends IndexedStage {
     private final SlideRigger rigger;
 
-    public CaughtListStage(Application context){
+    public CaughtListStage(Application context) {
         super(CaughtListStage.class.getName());
         this.rigger = new SlideRigger(context);
     }
+
     @Override
     public int getLayoutId() {
         return R.layout.caught_list_view;
@@ -28,7 +29,7 @@ public class CaughtListStage extends IndexedStage {
         return rigger;
     }
 
-    public CaughtListStage(){
+    public CaughtListStage() {
         this(PeoplemonApplication.getInstance());
     }
 }

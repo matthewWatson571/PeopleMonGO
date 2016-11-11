@@ -65,7 +65,7 @@ public class EditProfileView extends LinearLayout {
 
     @OnClick(R.id.edit_picture_button)
     public void uploadAvatar() {
-        ((MainActivity)context).getImage();
+        ((MainActivity) context).getImage();
     }
 
 

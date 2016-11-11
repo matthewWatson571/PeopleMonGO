@@ -26,15 +26,15 @@
             android:layout_gravity="bottom|start"
             android:layout_margin="10dp"/>
 
-        <android.support.design.widget.FloatingActionButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/chat_fab"
-            android:src="@drawable/chat"
-            android:clickable="true"
-            app:fabSize="normal"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="10dp"/>
+        <!--<android.support.design.widget.FloatingActionButton-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:id="@+id/nearby_fab"-->
+            <!--android:src="@drawable/chat"-->
+            <!--android:clickable="true"-->
+            <!--app:fabSize="normal"-->
+            <!--android:layout_gravity="bottom|end"-->
+            <!--android:layout_margin="10dp"/>-->
 
         <android.support.design.widget.FloatingActionButton
             android:layout_width="wrap_content"
@@ -43,7 +43,7 @@
             android:id="@+id/caught_fab"
             android:src="@drawable/pokeball"
             app:fabSize="normal"
-            android:layout_gravity="bottom|center"
+            android:layout_gravity="bottom|right"
             android:layout_margin="10dp"/>
 
     </android.support.design.widget.CoordinatorLayout>

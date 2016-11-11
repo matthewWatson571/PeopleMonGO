@@ -131,6 +131,7 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         try {
             if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && data != null) {
+
                 Uri selectedImage = data.getData();
                 String[] filePathColumn = {MediaStore.Images.Media.DATA};
                 Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
@@ -138,28 +139,30 @@ public class MainActivity extends AppCompatActivity {
                 int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
                 String imageString = cursor.getString(columnIndex);
                 cursor.close();
-                //Convert to Bitmap Array
-                Log.d(imageString,"imageString");
-                Bitmap bm = BitmapFactory.decodeFile(imageString);
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                bm.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
-                byte[] b = baos.toByteArray();
 
-                //Take the bitmap Array and encode it to Base64
+
+                //Convert to Bitmap Array
+                Log.d(imageString, "imageString");
+                Bitmap bitmap = BitmapFactory.decodeFile(imageString);
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+                byte[] b = outputStream.toByteArray();
+
+                //to base64
                 String encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
 
                 makeApiCallForProfile(encodedImage);
 
-                //Make API Call to Send Base64 to Server
+                //send
                 EventBus.getDefault().post(new ImageLoadedEvent(imageString));
 
             } else {
 
-                Toast.makeText(this, "Error Retrieving Image", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, R.string.error_retrieving_image, Toast.LENGTH_LONG).show();
             }
         } catch (Exception e) {
 
-            Toast.makeText(this, "Error Retrieving Image", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.error_retrieving_image, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -173,12 +176,13 @@ public class MainActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
 
                 } else {
-                    Toast.makeText(context, "Get User Info Failed" + ": " + response.code(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, R.string.profile_info_error + ": " + response.code(), Toast.LENGTH_LONG).show();
                 }
             }
+
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                Toast.makeText(context, "Get User Info Failed", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, R.string.profile_info_error, Toast.LENGTH_LONG).show();
             }
         });
     }

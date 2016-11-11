@@ -92,7 +92,7 @@ public class LoginView extends LinearLayout {
             spinner.setVisibility(VISIBLE);
 
             RestClient restClient = new RestClient();
-            restClient.getApiService().login(Constants.grant_type ,username,password).enqueue(new Callback<Authorization>() {
+            restClient.getApiService().login(Constants.grant_type, username, password).enqueue(new Callback<Authorization>() {
 
                 @Override
                 public void onResponse(Call<Authorization> call, Response<Authorization> response) {

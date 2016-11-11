@@ -17,9 +17,9 @@ public class SessionRequestInterceptor implements Interceptor {
     public Response intercept(Chain chain) throws IOException {
         Request request = chain.request();
 
-        if (UserStore.getInstance().getToken()!=null){
+        if (UserStore.getInstance().getToken() != null) {
             Request.Builder builder = request.newBuilder();
-            builder.header("Authorization" , "Bearer "
+            builder.header("Authorization", "Bearer "
                     + UserStore.getInstance().getToken());
             request = builder.build();
         }

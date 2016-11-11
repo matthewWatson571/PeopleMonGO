@@ -21,7 +21,6 @@ import com.example.matthewwatson.peoplemongo.Network.RestClient;
 import com.example.matthewwatson.peoplemongo.PeoplemonApplication;
 import com.example.matthewwatson.peoplemongo.R;
 import com.example.matthewwatson.peoplemongo.Stages.CaughtListStage;
-import com.example.matthewwatson.peoplemongo.Stages.EditProfileStage;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
@@ -74,8 +73,8 @@ public class MapPageView extends RelativeLayout implements OnMapReadyCallback,
     @Bind(R.id.radar_fab)
     FloatingActionButton radarFAB;
 
-    @Bind(R.id.chat_fab)
-    FloatingActionButton chatFAB;
+//    @Bind(R.id.nearby_fab)
+//    FloatingActionButton nearbyFab;
 
     @Bind(R.id.caught_fab)
     FloatingActionButton caughtFAB;
@@ -177,7 +176,7 @@ public class MapPageView extends RelativeLayout implements OnMapReadyCallback,
 
                     for (final User user : peopleMon) {
 
-                        if ((user.getAvatarBase64() == null) || (user.getAvatarBase64().length() <= 50)){
+                        if ((user.getAvatarBase64() == null) || (user.getAvatarBase64().length() <= 50)) {
 
                             LatLng latLng = new LatLng(user.getLatitude(), user.getLongitude());
                             mMap.addMarker(new MarkerOptions().title(user.getUserId()).position(latLng)
@@ -204,7 +203,6 @@ public class MapPageView extends RelativeLayout implements OnMapReadyCallback,
 
                             }
                         }
-
                     }
 
                 } else {
@@ -221,7 +219,7 @@ public class MapPageView extends RelativeLayout implements OnMapReadyCallback,
     }
 
     @OnClick(R.id.caught_fab)
-    public void showAddCategoryView() {
+    public void caughtView() {
         Flow flow = PeoplemonApplication.getMainFlow();
         History newHistory = flow.getHistory().buildUpon()
                 .push(new CaughtListStage())
@@ -229,14 +227,14 @@ public class MapPageView extends RelativeLayout implements OnMapReadyCallback,
         flow.setHistory(newHistory, Flow.Direction.FORWARD);
     }
 
-    @OnClick(R.id.chat_fab)
-            public void editStuff(){
-        Flow flow = PeoplemonApplication.getMainFlow();
-        History newHistory = flow.getHistory().buildUpon()
-                .push(new EditProfileStage())
-                .build();
-        flow.setHistory(newHistory, Flow.Direction.FORWARD);
-    }
+//    @OnClick(R.id.nearby_fab)
+//    public void nearByUsers() {
+//        Flow flow = PeoplemonApplication.getMainFlow();
+//        History newHistory = flow.getHistory().buildUpon()
+//                .push(new NearbyStage())
+//                .build();
+//        flow.setHistory(newHistory, Flow.Direction.FORWARD);
+//    }
 
 
     Runnable locationCheck = new Runnable() {
@@ -248,8 +246,6 @@ public class MapPageView extends RelativeLayout implements OnMapReadyCallback,
 
                     if (mLastLocation != null) {
                         updateLocation();
-                    }else {
-
                     }
                 } catch (SecurityException e) {
                     e.printStackTrace();

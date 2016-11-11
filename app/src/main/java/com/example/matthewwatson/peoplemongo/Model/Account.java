@@ -23,7 +23,8 @@ public class Account {
     @SerializedName("Password")
     private String password;
 
-    public Account(){}
+    public Account() {
+    }
 
     public Account(String email, String fullName, String avatarBase64, String apiKey, String password) {
         this.email = email;

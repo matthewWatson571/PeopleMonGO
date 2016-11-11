@@ -14,10 +14,11 @@ import com.example.matthewwatson.peoplemongo.Riggers.SlideRigger;
 public class RegisterStage extends IndexedStage {
     private final SlideRigger rigger;
 
-    public RegisterStage(Application context){
+    public RegisterStage(Application context) {
         super(RegisterStage.class.getName());
         this.rigger = new SlideRigger(context);
     }
+
     @Override
     public int getLayoutId() {
         return R.layout.register_view;
@@ -28,7 +29,7 @@ public class RegisterStage extends IndexedStage {
         return rigger;
     }
 
-    public RegisterStage(){
+    public RegisterStage() {
         this(PeoplemonApplication.getInstance());
     }
 }

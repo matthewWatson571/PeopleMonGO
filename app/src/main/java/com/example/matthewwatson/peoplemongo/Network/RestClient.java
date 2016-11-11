@@ -18,7 +18,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RestClient {//binds network files together
     private ApiService apiService;
 
-    public RestClient(){
+    public RestClient() {
         GsonBuilder builder = new GsonBuilder(); //converting string to date format
         builder.setDateFormat("EEE, dd MMM yyyy HH:mm:ss Z");
         Gson gson = builder.create();

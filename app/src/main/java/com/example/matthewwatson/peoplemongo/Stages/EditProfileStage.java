@@ -23,11 +23,12 @@ public class EditProfileStage extends IndexedStage {
         return rigger;
     }
 
-    public EditProfileStage(Application context){
+    public EditProfileStage(Application context) {
         super(MapStage.class.getName());
         this.rigger = new SlideRigger(context);
     }
-    public EditProfileStage(){
+
+    public EditProfileStage() {
         this(PeoplemonApplication.getInstance());
     }
 
