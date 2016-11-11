@@ -11,4 +11,40 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"/>
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        xmlns:app="http://schemes.android.com/apk/res-auto">
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/radar"
+            app:fabSize="normal"
+            android:id="@+id/radar_fab"
+            android:clickable="true"
+            android:layout_gravity="bottom|start"
+            android:layout_margin="10dp"/>
+
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/chat_fab"
+            android:src="@drawable/chat"
+            android:clickable="true"
+            app:fabSize="normal"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="10dp"/>
+
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:id="@+id/caught_fab"
+            android:src="@drawable/pokeball"
+            app:fabSize="normal"
+            android:layout_gravity="bottom|center"
+            android:layout_margin="10dp"/>
+
+    </android.support.design.widget.CoordinatorLayout>
 </com.example.matthewwatson.peoplemongo.Views.MapPageView>

@@ -31,10 +31,6 @@ public class EditProfileStage extends IndexedStage {
         this(PeoplemonApplication.getInstance());
     }
 
-
-
-
-
 }
 
 

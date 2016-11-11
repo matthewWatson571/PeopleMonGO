@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -14,7 +15,9 @@ import com.example.matthewwatson.peoplemongo.Componets.Constants;
 import com.example.matthewwatson.peoplemongo.MainActivity;
 import com.example.matthewwatson.peoplemongo.Model.User;
 import com.example.matthewwatson.peoplemongo.Network.RestClient;
+import com.example.matthewwatson.peoplemongo.PeoplemonApplication;
 import com.example.matthewwatson.peoplemongo.R;
+import com.example.matthewwatson.peoplemongo.Stages.CaughtListStage;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
@@ -34,6 +37,9 @@ import java.util.Arrays;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import flow.Flow;
+import flow.History;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -49,18 +55,25 @@ public class MapPageView extends RelativeLayout implements OnMapReadyCallback,
     private GoogleMap mMap;
     private GoogleApiClient mGoogleApiClient;
     private Location mLastLocation;
-    private LocationRequest mLocationRequest;
-    Handler handler = new Handler();
+
+    private Handler handler = new Handler();
 
     private LatLng latLng;
     private Context context;
     private ArrayList<User> peopleMon;
-    private ArrayList<User> caughtPeoplemon;
-    private String caughtName;
+
 
     @Bind(R.id.googleMapView)
     MapView map;
 
+    @Bind(R.id.radar_fab)
+    FloatingActionButton radarFAB;
+
+    @Bind(R.id.chat_fab)
+    FloatingActionButton chatFAB;
+
+    @Bind(R.id.caught_fab)
+    FloatingActionButton caughtFAB;
 
     public MapPageView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -89,6 +102,7 @@ public class MapPageView extends RelativeLayout implements OnMapReadyCallback,
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
+
         handler.post(locationCheck);
     }
 
@@ -109,8 +123,13 @@ public class MapPageView extends RelativeLayout implements OnMapReadyCallback,
         restClient.getApiService().catchemAll(marker.getTitle(), Constants.radiusInMeters).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
-                Toast.makeText(context, "You caught a wild " + marker.getId(), Toast.LENGTH_SHORT).show();
-                caughtUsers();
+                if (response.isSuccessful()) {
+                    Toast.makeText(context, "You got 'em!", Toast.LENGTH_SHORT).show();
+                    marker.remove();
+//                    caughtUsers();
+                } else {
+                    Toast.makeText(context, "You can't catch yourself!", Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
@@ -148,13 +167,13 @@ public class MapPageView extends RelativeLayout implements OnMapReadyCallback,
             @Override
             public void onResponse(Call<User[]> call, Response<User[]> response) {
                 if (response.isSuccessful()) {
-//                    Toast.makeText(context, R.string.nearby_users, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, R.string.nearby_users, Toast.LENGTH_SHORT).show();
 
                     peopleMon = new ArrayList<>(Arrays.asList(response.body()));
 
                     for (final User user : peopleMon) {
                         LatLng latLng = new LatLng(user.getLatitude(), user.getLongitude());
-                        mMap.addMarker(new MarkerOptions().position(latLng).title(user.getUserName())
+                        mMap.addMarker(new MarkerOptions().position(latLng).title(user.getUserId())
                                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.peoplemon)));
                     }
 
@@ -179,34 +198,21 @@ public class MapPageView extends RelativeLayout implements OnMapReadyCallback,
 
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
                 .addLocationRequest(mLocationRequest);
-
-//        try {
-//            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
-//
-//        }catch (SecurityException s){
-//            Toast.makeText(context, "shit didn't work", Toast.LENGTH_SHORT).show();
-//        }
-
     }
 
-    public void caughtUsers() {
-        final RestClient restclient = new RestClient();
-        restclient.getApiService().caught().enqueue(new Callback<User[]>() {
-            @Override
-            public void onResponse(Call<User[]> call, Response<User[]> response) {
-//                for (final User user : caughtPeoplemon) {
-//                    caughtPeoplemon.add(user);
-//                }
-            }
 
-            @Override
-            public void onFailure(Call<User[]> call, Throwable t) {
-                Toast.makeText(context, R.string.list_failed, Toast.LENGTH_SHORT).show();
-            }
-        });
+    @OnClick(R.id.caught_fab)
+    public void showAddCategoryView() {
+        Flow flow = PeoplemonApplication.getMainFlow();
+        History newHistory = flow.getHistory().buildUpon()
+                .push(new CaughtListStage())
+                .build();
+        flow.setHistory(newHistory, Flow.Direction.FORWARD);
     }
 
-    public void updateLocation(){
+
+    @OnClick(R.id.radar_fab)
+    public void updateLocation() {
         latLng = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
         mMap.addMarker(new MarkerOptions().position(latLng).title(getContext().getString(R.string.me))
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.pokemon)));
@@ -239,14 +245,15 @@ public class MapPageView extends RelativeLayout implements OnMapReadyCallback,
                 try {
                     mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
 
-                    if(mLastLocation != null){
+                    if (mLastLocation != null) {
                         updateLocation();
                     }
                 } catch (SecurityException e) {
                     e.printStackTrace();
                 }
             } finally {
-                handler.postDelayed(this, 2000);
+//                handler.postDelayed(this, 4000);
+                //too annoying
             }
         }
     };

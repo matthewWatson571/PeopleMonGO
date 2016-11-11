@@ -31,6 +31,7 @@ import butterknife.OnClick;
  */
 
 public class EditProfileView extends LinearLayout {
+
     private Context context;
 
     public String selectedImage;
