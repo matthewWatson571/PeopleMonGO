@@ -55,7 +55,7 @@ public class CaughtListAdapter extends RecyclerView.Adapter<CaughtListAdapter.Ca
         TextView nameField;
 
 
-        public CaughtListHolder(View itemView) { 
+        public CaughtListHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }

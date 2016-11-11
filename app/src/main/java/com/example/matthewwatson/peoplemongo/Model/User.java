@@ -79,6 +79,11 @@ public class User {
         this.created = created;
     }
 
+    public User(String fullName, String avatarBase64) {
+        this.fullName = fullName;
+        this.avatarBase64 = avatarBase64;
+    }
+
     public String getUserId() {
         return userId;
     }

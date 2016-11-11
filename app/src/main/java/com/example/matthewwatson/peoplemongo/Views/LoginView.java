@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.matthewwatson.peoplemongo.Componets.Constants;
 import com.example.matthewwatson.peoplemongo.Model.Authorization;
 import com.example.matthewwatson.peoplemongo.Network.RestClient;
 import com.example.matthewwatson.peoplemongo.Network.UserStore;
@@ -91,7 +92,7 @@ public class LoginView extends LinearLayout {
             spinner.setVisibility(VISIBLE);
 
             RestClient restClient = new RestClient();
-            restClient.getApiService().login(grantType,username,password).enqueue(new Callback<Authorization>() {
+            restClient.getApiService().login(Constants.grant_type ,username,password).enqueue(new Callback<Authorization>() {
 
                 @Override
                 public void onResponse(Call<Authorization> call, Response<Authorization> response) {

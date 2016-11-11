@@ -1,6 +1,8 @@
 package com.example.matthewwatson.peoplemongo.Views;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
@@ -8,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.util.AttributeSet;
+import android.util.Base64;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -18,6 +21,7 @@ import com.example.matthewwatson.peoplemongo.Network.RestClient;
 import com.example.matthewwatson.peoplemongo.PeoplemonApplication;
 import com.example.matthewwatson.peoplemongo.R;
 import com.example.matthewwatson.peoplemongo.Stages.CaughtListStage;
+import com.example.matthewwatson.peoplemongo.Stages.EditProfileStage;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
@@ -51,6 +55,7 @@ import retrofit2.Response;
 public class MapPageView extends RelativeLayout implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
         GoogleMap.OnMarkerClickListener {
+
 
     private GoogleMap mMap;
     private GoogleApiClient mGoogleApiClient;
@@ -124,17 +129,17 @@ public class MapPageView extends RelativeLayout implements OnMapReadyCallback,
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
-                    Toast.makeText(context, "You got 'em!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, R.string.got_em, Toast.LENGTH_SHORT).show();
                     marker.remove();
 //                    caughtUsers();
                 } else {
-                    Toast.makeText(context, "You can't catch yourself!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, R.string.cant_catch, Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                Toast.makeText(context, marker.getTitle() + " ran away!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, R.string.ran_away, Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -158,7 +163,6 @@ public class MapPageView extends RelativeLayout implements OnMapReadyCallback,
         mMap.clear();
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         mMap.setOnMarkerClickListener(this);
-
     }
 
     public void checkForNearby() {
@@ -172,9 +176,35 @@ public class MapPageView extends RelativeLayout implements OnMapReadyCallback,
                     peopleMon = new ArrayList<>(Arrays.asList(response.body()));
 
                     for (final User user : peopleMon) {
-                        LatLng latLng = new LatLng(user.getLatitude(), user.getLongitude());
-                        mMap.addMarker(new MarkerOptions().position(latLng).title(user.getUserId())
-                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.peoplemon)));
+
+                        if ((user.getAvatarBase64() == null) || (user.getAvatarBase64().length() <= 50)){
+
+                            LatLng latLng = new LatLng(user.getLatitude(), user.getLongitude());
+                            mMap.addMarker(new MarkerOptions().title(user.getUserId()).position(latLng)
+                                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.peoplemon)));
+
+                        } else {
+
+                            String encodedImage = user.getAvatarBase64();
+                            byte[] decodedString = Base64.decode(encodedImage, Base64.DEFAULT);
+                            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+
+
+                            try {
+                                decodedByte = Bitmap.createScaledBitmap(decodedByte, 120, 120, false);
+
+                                LatLng loc = new LatLng(user.getLatitude(), user.getLongitude());
+
+                                mMap.addMarker(new MarkerOptions().title(user.getUserId())
+                                        .icon(BitmapDescriptorFactory.fromBitmap(decodedByte))
+                                        .snippet(user.getUserId())
+                                        .position(loc));
+                            } catch (Exception e) {
+
+
+                            }
+                        }
+
                     }
 
                 } else {
@@ -190,17 +220,6 @@ public class MapPageView extends RelativeLayout implements OnMapReadyCallback,
         });
     }
 
-    protected void createLocationRequest() {
-        LocationRequest mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(10000);
-        mLocationRequest.setFastestInterval(5000);
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-
-        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
-                .addLocationRequest(mLocationRequest);
-    }
-
-
     @OnClick(R.id.caught_fab)
     public void showAddCategoryView() {
         Flow flow = PeoplemonApplication.getMainFlow();
@@ -210,6 +229,37 @@ public class MapPageView extends RelativeLayout implements OnMapReadyCallback,
         flow.setHistory(newHistory, Flow.Direction.FORWARD);
     }
 
+    @OnClick(R.id.chat_fab)
+            public void editStuff(){
+        Flow flow = PeoplemonApplication.getMainFlow();
+        History newHistory = flow.getHistory().buildUpon()
+                .push(new EditProfileStage())
+                .build();
+        flow.setHistory(newHistory, Flow.Direction.FORWARD);
+    }
+
+
+    Runnable locationCheck = new Runnable() {
+        @Override
+        public void run() {
+            try {
+                try {
+                    mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+
+                    if (mLastLocation != null) {
+                        updateLocation();
+                    }else {
+
+                    }
+                } catch (SecurityException e) {
+                    e.printStackTrace();
+                }
+            } finally {
+//                handler.postDelayed(this, 4000);
+                //too annoying
+            }
+        }
+    };
 
     @OnClick(R.id.radar_fab)
     public void updateLocation() {
@@ -238,25 +288,16 @@ public class MapPageView extends RelativeLayout implements OnMapReadyCallback,
         });
     }
 
-    Runnable locationCheck = new Runnable() {
-        @Override
-        public void run() {
-            try {
-                try {
-                    mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+    protected void createLocationRequest() { //platinum
+        LocationRequest mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(10000);
+        mLocationRequest.setFastestInterval(5000);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
-                    if (mLastLocation != null) {
-                        updateLocation();
-                    }
-                } catch (SecurityException e) {
-                    e.printStackTrace();
-                }
-            } finally {
-//                handler.postDelayed(this, 4000);
-                //too annoying
-            }
-        }
-    };
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
+                .addLocationRequest(mLocationRequest);
+    }
+
 
 }
 

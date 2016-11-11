@@ -33,6 +33,11 @@ public class Account {
         this.password = password;
     }
 
+    public Account(String fullName, String avatarBase64) {
+        this.fullName = fullName;
+        this.avatarBase64 = avatarBase64;
+    }
+
     public String getEmail() {
         return email;
     }

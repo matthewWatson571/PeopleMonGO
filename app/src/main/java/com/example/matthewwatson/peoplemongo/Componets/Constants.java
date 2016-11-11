@@ -7,7 +7,7 @@ package com.example.matthewwatson.peoplemongo.Componets;
 public class Constants {
     public static final String token = "access_token";
     public static final String tokenExpiration = ".expires";
-    public static final Integer radiusInMeters = 100;
+    public static final Integer radiusInMeters = 500;
 
     //add another for 500
 

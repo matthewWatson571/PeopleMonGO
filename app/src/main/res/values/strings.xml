@@ -29,4 +29,8 @@
     <string name="find_user_failed">Failed to Find Users</string>
     <string name="connection_failed">Connection Failed</string>
     <string name="list_failed">Error retrieving Peoplemon list</string>
+    <string name="profile_info_error">Error Retrieving User Info</string>
+    <string name="got_em">You got \'em!</string>
+    <string name="cant_catch">You can\'t catch yourself!</string>
+    <string name="ran_away">They ran away!</string>
 </resources>
